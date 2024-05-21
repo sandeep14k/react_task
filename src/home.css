@@ -1,27 +1,12 @@
-body{
-    margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-  }
 
-  .header {
-    position: fixed;
-    top: 0;
+  .content .blog{
+    margin-top: 60px;
     text-align: center;
-    background-color: red;
-    width:100%;
-    left:0;
-    height: 70px;
-  }
 
-  .header h2 {
-    margin-bottom: 20px;
-    color: #333;
   }
-  .content h2{
-    margin-top: 40px;
-    padding-top: 40px;
+  .content .title{
+     padding-top: 20px;
+     color: black;
   }
   .blog-preview {
     padding: 10px 16px;
@@ -39,3 +24,6 @@ body{
   .blog-preview a{
     text-decoration: none;
   }
+.mar{
+  margin-right: 15px;
+}

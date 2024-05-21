@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; 
 import Cookies from 'js-cookie';
+import { useEffect } from 'react';
 import {
   MDBBtn,
   MDBContainer,
@@ -13,14 +14,15 @@ import {
   MDBInput
 }
 from 'mdb-react-ui-kit';
-import './login.css'
+import './signup.css'
 import { Link } from "react-router-dom";
 
-
-function Login() {
-  const navigate=useNavigate();
+function SignUp() {
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [Codeforce,setCodeforce]=useState('');
+  const [username,setUsername]=useState('');
   const [errormsg, setErrormsg] = useState('');
 
   const token=Cookies.get("token")
@@ -48,17 +50,17 @@ function Login() {
       });
   }, []);
 
-  const handleLogin = async (e) => {
+  const handleSignup = async (e) => {
     setErrormsg("");
     e.preventDefault();
 
     try {
-      const response = await fetch('/users/login', {
+      const response = await fetch('/users/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ Email: email, Password: password }),
+        body: JSON.stringify({ Email: email, Password: password,User_name:username,Codeforce_handle:Codeforce}),
       });
 
       if (!response.ok) {
@@ -67,14 +69,14 @@ function Login() {
       }
 
       const userData = await response.json();
-      // console.log(userData);
-      Cookies.set("token",userData.token,{expires:1})
-      Cookies.set("refreshtoken",userData.refreshtoken,{expires:1})
+      console.log(userData);
+      Cookies.set('token',userData.token,{expires:1})
+      Cookies.set('refreshtoken',userData.refreshtoken,{expires:1})
       navigate('/home');
       
     } catch (error) {
-      console.error('Login failed:', error.message);
-      setErrormsg("Email or Password is wrong");
+      console.error(error.message);
+      setErrormsg(error.message);
     
     }
   };
@@ -95,16 +97,17 @@ function Login() {
                 <MDBIcon fas icon="cubes fa-3x me-3" style={{ color: '#ff6219' }}/>
                 <span className="h1 fw-bold mb-0">Logo</span>
               </div>
-
-              <h5 className="fw-normal my-4 pb-3" style={{letterSpacing: '1px'}}>Sign into your account</h5>
-              <form onSubmit={handleLogin}>
-                <MDBInput wrapperClass='mb-4' label='Email address' id='formControlLg' type='email' size="lg" value={email} onChange={(e) => setEmail(e.target.value)} />
-                <MDBInput wrapperClass='mb-4' label='Password' id='formControlLg' type='password' size="lg" value={password} onChange={(e) => setPassword(e.target.value)} />
-
-              <MDBBtn className="mb-4 px-5" color='dark' size='lg' type='submit'>Login</MDBBtn>
+              <form onSubmit={handleSignup}>
+              <h5 className="fw-normal my-4 pb-3" style={{letterSpacing: '1px'}}>Create a new account</h5>
+               <MDBInput wrapperClass='mb-4' label='Codeforce handle' id='formControlLg' type='text' size="lg"  value={Codeforce} onChange={(e) => setCodeforce(e.target.value)}/>
+                <MDBInput wrapperClass='mb-4' label='Email address' id='formControlLg' type='email' size="lg"  value={email} onChange={(e) => setEmail(e.target.value)}/>
+                <MDBInput wrapperClass='mb-4' label='User name' id='formControlLg' type='text' size="lg"  value={username} onChange={(e) => setUsername(e.target.value)}/>
+                <MDBInput wrapperClass='mb-4' label='Password' id='formControlLg' type='password' size="lg"  value={password} onChange={(e) => setPassword(e.target.value)}/>
+      
+              <MDBBtn className="mb-4 px-5" color='dark' size='lg' type='submit' >sign up</MDBBtn>
               <p className="msg">{errormsg}</p>
               </form>
-              <p className="mb-5 pb-lg-2" style={{color: '#393f81'}}>Don't have an account? <Link to={'/signup'}>Register here</Link></p>
+              <p className="mb-5 pb-lg-2" style={{color: 'black'}}>I have an account <Link to={'/'}>Login</Link></p>
 
               <div className='d-flex flex-row justify-content-start'>
                 <a href="#!" className="small text-muted me-1">Terms of use.</a>
@@ -121,4 +124,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default SignUp;
